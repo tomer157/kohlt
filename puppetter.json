@@ -1,0 +1,7 @@
+{
+    "dev": {
+        "args": ["--ignore-certificate-errors"],
+        "headless": false,
+        "ignoreHTTPSErrors": true
+    }
+}
