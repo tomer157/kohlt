@@ -1,1 +1,4 @@
 node_modules
+log-files/combined.log
+mochawesome-report/mochawesome.html
+mochawesome-report/mochawesome.json
