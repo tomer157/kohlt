@@ -3,5 +3,10 @@
         "args": ["--ignore-certificate-errors"],
         "headless": false,
         "ignoreHTTPSErrors": true
+    },
+
+    "navigation": {
+        "timeout": 35000,
+        "waitUntil": "networkidle2"
     }
 }
