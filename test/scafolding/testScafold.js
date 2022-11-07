@@ -28,7 +28,7 @@ describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
     page = await browser.newPage();
     await page.setViewport({ width: 1600, height: 900 });
     await page.goto(URL, puppeteerJson.navigation);
-    accessToken = await utils
+    await utils
       .loginViaUi(page, URL, email, password)
       .catch((err) => logger.error(`[error] - [${err}]`));
 
@@ -41,5 +41,16 @@ describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
     logger.error(`[error] - [error here]`);
   });
 
-  after(async () => {});
+  after(async () => {
+    await utils.delay(3333);
+    logger.info(`[info]- [delete cookies]`);
+    accessToken = cookies[1].split('=');
+    access.value = accessToken[1];
+    await page.deleteCookie(access);
+
+    logger.info(`[info]- [close page instance]`);
+    await page.close();
+    logger.info(`[info]- [close browser instance]`);
+    await browser.close();
+  });
 });

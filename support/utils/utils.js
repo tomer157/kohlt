@@ -16,7 +16,7 @@ let date = myDate
   .join('/');
 let time = myDate.toLocaleTimeString('he-IL', { timeZone: 'Asia/Jerusalem' });
 
-class Util {
+class Utils {
   /**
    * @param {} page
    * @param {} url
@@ -245,5 +245,5 @@ class Util {
   };
 }
 
-const util = new Util();
-module.exports = util;
+const utils = new Utils();
+module.exports = utils;
