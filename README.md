@@ -1,4 +1,4 @@
-# Kohlt automation suite
+# Welcome to Kohlt automation suite
 
 # cloning and installation:
 

@@ -1,6 +1,6 @@
 {
     "dev": {
-        "args": ["--ignore-certificate-errors"],
+        "args": ["--start-maximized"],
         "headless": false,
         "ignoreHTTPSErrors": true
     },

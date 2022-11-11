@@ -1,8 +1,12 @@
 const { logger } = require('../../logger');
 const utils = require('../utils/utils');
+const infra = require('../../support/utils/infraFuncs');
 
 class Example {
-  email = '#email';
+  email = 'input[name="username"]';
+  password = 'input[name="password"]';
+  submitBtn = 'button[id="submit"]';
+  logoutBtn = `//a[text()='Log out']`;
 
   constructor() {
     // singleton....
@@ -13,14 +17,19 @@ class Example {
   }
 
   async emailType(page, params) {
-    const exists = await page.$eval(this.email, () => true).catch(() => false);
+    await infra.selectorTypeEvent(page, this.email, params);
+  }
 
-    if (exists != true) {
-      logger.error(`[error] - [${this.email} doesnt exists!]`);
-      throw new Error(`${this.email} doesnt exists!`);
-    }
+  async passwordType(page, params) {
+    await infra.selectorTypeEvent(page, this.password, params);
+  }
 
-    await page.type(this.email, params);
+  async submitBtnClick(page) {
+    await infra.selectorClick(page, this.submitBtn);
+  }
+
+  async logoutBtnClick(page) {
+    await infra.xpathClick(page, this.logoutBtn);
   }
 }
 

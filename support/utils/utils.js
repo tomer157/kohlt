@@ -30,18 +30,18 @@ class Utils {
     try {
       await page.goto(url, {
         timeout: 120000,
-        waitUntil: 'networkkidle2',
+        waitUntil: 'networkidle2',
       });
 
       await examplePage.emailType(page, email);
-      await page.waitForNavigation({
-        waitUntil: 'networkkidle2',
-        timeout: 120000,
-      });
-
+      await utils.delay(1300);
+      await examplePage.passwordType(page, password);
+      await utils.delay(1300);
+      await examplePage.submitBtnClick(page);
+      await utils.delay(1300);
+      logger.info(`[info]-[fetch cookies]`);
       const cookies = await page.cookies();
-      const accessToken = cookies.find((cok) => cok.name === 'accessToken');
-      return accessToken;
+      return cookies;
     } catch (error) {
       logger.error(`[error] - [login error failed: ${error}]`);
       throw new Error(`login failed: ${error}`);
@@ -209,7 +209,7 @@ class Utils {
   evaluateEnvironment = (url) => {
     let env;
     switch (url) {
-      case process.env.localhost:
+      case process.env.url:
         env = 'localhost';
         break;
       case process.env.dev:

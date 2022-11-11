@@ -4,9 +4,11 @@ const expect = require('chai').expect;
 require('dotenv').config();
 const utils = require('../../support/utils/utils');
 const { logger } = require('../../logger/index');
-const URL = process.env('');
+const URL = process.env['url'];
 const SELECTED_ENV = utils.evaluateEnvironment(URL);
 const puppeteerJson = require('../../puppetter.json');
+const examplePage = require('../../support/pages/ExamplePage');
+const apiUtils = require('../../support/utils/apiUtils');
 
 describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
   let browser;
@@ -24,9 +26,9 @@ describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
   let accessToken;
 
   before(async () => {
-    browser = await puppeteer.launch(puppeteerJson);
+    browser = await puppeteer.launch(puppeteerJson.dev);
     page = await browser.newPage();
-    await page.setViewport({ width: 1600, height: 900 });
+    await page.setViewport({ width: 1800, height: 768 });
     await page.goto(URL, puppeteerJson.navigation);
     await utils
       .loginViaUi(page, URL, email, password)
@@ -34,11 +36,36 @@ describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
 
     await utils.delay(3500);
     cookies = await utils.getCookies(page);
+    logger.info(cookies);
   });
 
   it(`test - 1`, async () => {
-    logger.info(`[info]- [text here]`);
-    logger.error(`[error] - [error here]`);
+    logger.info(
+      `[info]- [Verify new page URL contains practicetestautomation.com/logged-in-successfully/]`
+    );
+    const nowUrl = await utils.fetchUrl(page);
+    console.log(nowUrl);
+    expect(nowUrl).to.eq(
+      'https://practicetestautomation.com/logged-in-successfully/'
+    );
+
+    await utils.delay(1300);
+  });
+
+  it(`test - 2`, async () => {
+    await utils.delay(4000);
+    logger.info(`[info]- [click on the logout button]`);
+    await examplePage.logoutBtnClick(page);
+  });
+
+  it(`test  - 3`, async () => {
+    const res = await apiUtils.getCall(
+      'https://jsonplaceholder.typicode.com/todos/1',
+      {}
+    );
+    console.log(res.data);
+
+    expect(res.data.name).to.eq('Leanne Graham');
   });
 
   after(async () => {

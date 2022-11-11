@@ -1,10 +1,13 @@
+const { params } = require('superagent/lib/utils');
+const { empty } = require('uuidv4');
 const { logger } = require('../../logger');
 const utils = require('../utils/utils');
 
 class Infra {
   constructor() {
-    if (this.Infra.instance === null) {
-      Infra.instance = this;
+    // singleton....
+    if (Infra.instance === null) {
+      Infra.this;
     }
     return Infra.instance;
   }
@@ -21,18 +24,31 @@ class Infra {
   }
 
   /** find element by selector and click it! you can also force it with the added param {f: true} */
-  async selectorClick(page, element, args) {
+  async selectorClick(page, element) {
     const exists = await page.$eval(element, () => true).catch(() => false);
     if (exists != true) {
       logger.error(`[error] - [${element} doesnt exists!]`);
       throw new Error(`${element} doesnt exists!`);
     }
+    await page.click(element);
+  }
 
-    if (args === { f: t }) {
-      utils.forceClickBySelector(page, element, 5000);
-    } else {
-      await page.click(element);
+  async selectorForceClick(page, element) {
+    const exists = await page.$eval(element, () => true).catch(() => false);
+    if (exists != true) {
+      logger.error(`[error] - [${element} doesnt exists!]`);
+      throw new Error(`${element} doesnt exists!`);
     }
+    await utils.forceClickBySelector(page, element, 5000);
+  }
+
+  async xpathClick(page, element) {
+    const el = await page.waitForXPath(element);
+    await el.click();
+  }
+
+  async xpathForceClick(page, element) {
+    await utils.forceClickByXPATH(page, element, 5000);
   }
 
   // find element css selector and type text to it
@@ -82,6 +98,6 @@ class Infra {
   }
 }
 
-const infraFuncs = new infraFuncs();
+const infraFuncs = new Infra();
 Object.freeze(infraFuncs);
 module.exports = infraFuncs;
