@@ -227,9 +227,6 @@ class Utils {
    */
   retry = async (promiseFactory, count) => {
     try {
-      if (count <= 0) {
-        throw error;
-      }
       return await promiseFactory();
     } catch (error) {
       if (count <= 0) {

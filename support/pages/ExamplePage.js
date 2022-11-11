@@ -7,6 +7,8 @@ class Example {
   password = 'input[name="password"]';
   submitBtn = 'button[id="submit"]';
   logoutBtn = `//a[text()='Log out']`;
+  addBtn = 'button[id="add_btn"]';
+  confirmarionDiv = 'div[id="confirmation"]';
 
   constructor() {
     // singleton....
@@ -30,6 +32,18 @@ class Example {
 
   async logoutBtnClick(page) {
     await infra.xpathClick(page, this.logoutBtn);
+  }
+
+  async addBtnClick(page) {
+    await infra.selectorClick(page, this.addBtn);
+  }
+
+  async waitForConfirmation(page) {
+    await infra.selectorExists(page, this.confirmarionDiv);
+    // await utils.retry(
+    //   () => Promise.all([infra.selectorExists(page, this.confirmarionDiv)]),
+    //   4
+    // );
   }
 }
 

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "example:run": "mocha test/scafolding/testScafold.js --timeout 140000"
+    "example:run": "mocha test/scafolding/testScafold.js --timeout 140000 --reporter mochawesome",
+    "test:script": "node script1.js"
   },
   "keywords": [],
   "author": "",

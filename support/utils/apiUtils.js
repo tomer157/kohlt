@@ -15,9 +15,8 @@ class ApiUtils {
   getCall = async (url, headers = {}) => {
     let res;
     await axios
-      .get('https://jsonplaceholder.typicode.com/users/1')
+      .get(url, headers)
       .then((response) => {
-        // console.log(response);
         res = response;
       })
       .catch((err) => console.log(err));
