@@ -7,7 +7,7 @@ const { logger } = require('../../logger/index');
 const URL = process.env['url'];
 const SELECTED_ENV = utils.evaluateEnvironment(URL);
 const puppeteerJson = require('../../puppetter.json');
-const examplePage = require('../../support/pages/ExamplePage');
+const examplePage = require('../../support/pages/ExamplePageTest');
 const apiUtils = require('../../support/utils/apiUtils');
 const practiceURL = process.env.practiceUrl;
 
@@ -54,8 +54,12 @@ describe(`test scafolding suite, environment: ${SELECTED_ENV}`, () => {
 
   it(`test - 2 - UI assertion and actions`, async () => {
     await page.goto(practiceURL, puppeteerJson.navigation);
+    logger.info(`[info]- [click on the add button]`);
     await examplePage.addBtnClick(page);
     await utils.delay(2100);
+    // here we are waiting for green approval banner to come up whilst validating the section div at the
+    // same time!
+    logger.info(`[info]- [validating several elements at once]`);
     await examplePage.waitForConfirmation(page);
   });
 

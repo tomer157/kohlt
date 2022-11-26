@@ -1,6 +1,6 @@
 const { fs } = require('fs').promises;
 const { logger } = require('../../logger');
-const examplePage = require('../pages/ExamplePage');
+// const examplePage = require('../pages/ExamplePageTest');
 require('dotenv').config();
 const XLSX = require('xlsx');
 const myDate = new Date();
@@ -33,11 +33,11 @@ class Utils {
         waitUntil: 'networkidle2',
       });
 
-      await examplePage.emailType(page, email);
+      await page.type('input[name="username"]', email);
       await utils.delay(1300);
-      await examplePage.passwordType(page, password);
+      await page.type('input[name="password"]', password);
       await utils.delay(1300);
-      await examplePage.submitBtnClick(page);
+      await page.click('button[id="submit"]');
       await utils.delay(1300);
       logger.info(`[info]-[fetch cookies]`);
       const cookies = await page.cookies();
@@ -225,16 +225,16 @@ class Utils {
    * great for a race condition for several elements that takes time to load
    * @implemantation : await util.retry(() => Promise.all([firstelement, secondElement]), 5)
    */
-  retry = async (promiseFactory, count) => {
+  retry = async (promiseFactory) => {
+    console.log('retry');
     try {
-      return await promiseFactory();
+      Promise.all(promiseFactory);
     } catch (error) {
-      if (count <= 0) {
-        throw error;
-      }
+      logger.error(`[error] - [retry  failed: ${error}]`);
+      throw error;
     }
 
-    return this.retry(promiseFactory, count - 1);
+    // return this.retry(promiseFactory, count - 1);
   };
 
   stopPageFromRefreshing = async (page) => {

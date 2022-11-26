@@ -1,6 +1,6 @@
 const { logger } = require('../../logger');
 const utils = require('../utils/utils');
-const infra = require('../../support/utils/infraFuncs');
+const infra = require('../utils/infraFuncs');
 
 class Example {
   email = 'input[name="username"]';
@@ -9,6 +9,7 @@ class Example {
   logoutBtn = `//a[text()='Log out']`;
   addBtn = 'button[id="add_btn"]';
   confirmarionDiv = 'div[id="confirmation"]';
+  testSection = 'section[id="food_list"]';
 
   constructor() {
     // singleton....
@@ -39,11 +40,10 @@ class Example {
   }
 
   async waitForConfirmation(page) {
-    await infra.selectorExists(page, this.confirmarionDiv);
-    // await utils.retry(
-    //   () => Promise.all([infra.selectorExists(page, this.confirmarionDiv)]),
-    //   4
-    // );
+    await utils.retry([
+      await infra.selectorExists(page, this.confirmarionDiv),
+      await infra.selectorExists(page, this.testSection),
+    ]);
   }
 }
 
